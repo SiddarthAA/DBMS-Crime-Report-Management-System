@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .delete-container {
+        width: 600px;
+        margin: 100px auto;
+        padding: 30px;
+        background-color: rgba(0, 0, 0, 0.85);
+        border: 1px solid red;
+        border-radius: 12px;
+        color: red;
+        text-align: center;
+    }
+    .delete-container h2 {
+        margin-bottom: 20px;
+    }
+    .delete-container p {
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+    .btn-group {
+        display: flex;
+        justify-content: space-around;
+    }
+    .btn {
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        text-decoration: none;
+        color: #000;
+        border: none;
+        transition: 0.3s;
+    }
+    .btn-danger {
+        background-color: red;
+    }
+    .btn-danger:hover {
+        background-color: darkred;
+    }
+    .btn-cancel {
+        background-color: #0f0;
+    }
+    .btn-cancel:hover {
+        background-color: #0b0;
+    }
+</style>
+
+<div class="delete-container">
+    <h2>Delete User</h2>
+    <p>Are you sure you want to delete <strong>{{ user.name }}</strong> ({{ user.email }})?</p>
+    <form method="POST">
+        <div class="btn-group">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{{ url_for('manage_users') }}" class="btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

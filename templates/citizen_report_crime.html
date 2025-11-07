@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}Report Crime - CRMS{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: black;
+        color: #0f0;
+        font-family: 'Courier New', monospace;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .report-container {
+        max-width: 800px;
+        margin: 80px auto;
+        padding: 40px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 1px solid #0f0;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 10px #0f0;
+        text-align: center;
+    }
+
+    .report-container h2 {
+        margin-bottom: 30px;
+        color: #0f0;
+        font-size: 28px;
+    }
+
+    .report-container input,
+    .report-container textarea,
+    .report-container select,
+    .report-container button {
+        width: 100%;
+        padding: 15px;
+        margin: 10px 0;
+        font-size: 16px;
+        background-color: black;
+        color: #0f0;
+        border: 1px solid #0f0;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .report-container textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .report-container input:focus,
+    .report-container textarea:focus,
+    .report-container select:focus {
+        outline: none;
+        border-color: #0f0;
+        box-shadow: 0 0 5px #0f0;
+    }
+
+    .report-container button {
+        background-color: #0f0;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .report-container button:hover {
+        background-color: #0a0;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #0f0;
+        text-decoration: underline;
+    }
+
+    .back-link:hover {
+        color: #0a0;
+    }
+</style>
+
+<div class="report-container">
+    <h2>Report a Crime</h2>
+    <form method="POST">
+        <input type="text" name="title" placeholder="Crime Title" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <select name="crime_type" required>
+            <option value="Theft">Theft</option>
+            <option value="Assault">Assault</option>
+            <option value="Cybercrime">Cybercrime</option>
+            <option value="Homicide">Homicide</option>
+            <option value="Other">Other</option>
+        </select>
+        <input type="text" name="location" placeholder="Location" required>
+        <button type="submit">Submit Report</button>
+    </form>
+    <a href="{{ url_for('dashboard') }}" class="back-link">← Return to Dashboard</a>
+</div>
+{% endblock %}

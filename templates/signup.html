@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <section>      
+        {% for _ in range(150) %}
+            <span></span>
+        {% endfor %}
+
+        <div class="signin">
+            <div class="content">
+                <h2>Sign Up</h2>
+                <form class="form" method="POST" action="{{ url_for('signup') }}">
+                    <div class="inputBox">
+                        <input type="text" name="name" required>
+                        <i>Full Name</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="email" name="email" required>
+                        <i>Email</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" name="password" required>
+                        <i>Password</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" name="phone_number">
+                        <i>Phone Number</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" name="address">
+                        <i>Address</i>
+                    </div>
+                    <div class="inputBox">
+                        <select name="role" required style="width: 100%; padding: 10px; background: #333; color: #fff; border: none; border-radius: 4px;">
+                            <option value="">Select Role</option>
+                            <option value="citizen">Citizen</option>
+                            <option value="officer">Officer</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="links">
+                        <a href="{{ url_for('login') }}">Already have an account?</a>
+                    </div>
+                    <div class="inputBox">
+                        <input type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

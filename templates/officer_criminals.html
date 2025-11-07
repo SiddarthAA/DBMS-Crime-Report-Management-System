@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .main-container {
+        padding: 40px;
+        max-width: 1200px;
+        margin: auto;
+        color: #00ff00;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .table-container {
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 16px;
+        padding: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 15px #00ff00;
+        overflow-x: auto;
+    }
+
+    .criminal-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .criminal-table th,
+    .criminal-table td {
+        border: 1px solid #00ff00;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .criminal-table th {
+        text-decoration: underline;
+        background-color: rgb(0, 0, 0);
+        color: #00ff00;
+    }
+
+    .criminal-table tr:nth-child(even) {
+        background-color: rgba(0, 255, 204, 0.05);
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: #00ff00;
+        color: #000;
+        padding: 8px 16px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #00ff00;
+    }
+
+    .btn-delete {
+        background-color: transparent;
+        border: 1px solid #ff4d4d;
+        color: #ff4d4d;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .btn-delete:hover {
+        background-color: rgba(255, 77, 77, 0.1);
+    }
+</style>
+
+<div class="main-container">
+    <div class="table-container">
+        <h2 class="title">Criminals</h2>
+        <a href="{{ url_for('add_criminal') }}" class="btn">Add New Criminal</a>
+
+        <table class="criminal-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Alias</th>
+                    <th>Age</th>
+                    <th>Crime History</th>
+                    <th>Last Arrest Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for criminal in criminals %}
+                <tr>
+                    <td>{{ criminal.name }}</td>
+                    <td>{{ criminal.alias if criminal.alias else 'N/A' }}</td>
+                    <td>{{ calculate_age(criminal.dob) }}</td>
+                    <td>{{ criminal.crime_history }}</td>
+                    <td>{{ criminal.last_arrest_date }}</td>
+                    <td>
+                        <form action="{{ url_for('delete_criminal', criminal_id=criminal.criminal_id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

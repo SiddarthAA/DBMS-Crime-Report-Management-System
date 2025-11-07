@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block title %}Assigned Crimes - CRMS{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: black;
+        color: #0f0;
+        font-family: 'Courier New', monospace;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .crime-container {
+        max-width: 1800px;
+        margin: 30px auto;
+        padding: 40px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 1px solid #0f0;
+        border-radius: 10px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .button-container {
+        max-height: 500px;
+        overflow-y: scroll;
+        padding: 20px;
+        margin-top: 20px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 5px;
+        border: 1px solid #0f0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .button-container::-webkit-scrollbar {
+        width: 0;
+    }
+
+    .button-container {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .crime-card {
+        margin: 15px 0;
+        background-color: rgba(0, 255, 0, 0.2);
+        padding: 20px;
+        border-radius: 5px;
+        border: 1px solid #0f0;
+    }
+
+    .crime-button {
+        width: 300px;
+        padding: 20px;
+        font-size: 20px;
+        text-align: left;
+        background-color: #0f0;
+        color: black;
+        border: 1px solid #0f0;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+
+    .crime-button:hover {
+        background-color: #0a0;
+        color: black;
+    }
+
+    .crime-details {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 5px;
+        border: 1px solid #0f0;
+    }
+
+    .crime-details ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .crime-details li {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .crime-details h4 {
+        margin-top: 25px;
+        font-size: 22px;
+    }
+
+    .evidence-container {
+        max-height: 400px;
+        overflow-y: auto;
+        margin-top: 15px;
+        padding: 15px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border: 1px solid #0f0;
+        border-radius: 5px;
+    }
+
+    .return-button {
+        background-color: #0f0;
+        color: black;
+        font-size: 18px;
+        padding: 15px 25px;
+        border: 1px solid #0f0;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+        display: inline-block;
+    }
+
+    .return-button:hover {
+        background-color: #0a0;
+        color: black;
+    }
+</style>
+
+<div class="content">
+    <div class="crime-container">
+        <h2>Assigned Crimes</h2>
+        <div class="button-container">
+            <div class="crime-card">
+                {% for crime in crimes %}
+                    <button class="crime-button" onclick="toggleDetails('{{ crime.crime_id }}')">
+                        {{ crime.title }} - {{ crime.crime_type }} ({{ crime.location }})
+                    </button>
+                    <div class="crime-details" id="details-{{ crime.crime_id }}">
+                        <ul>
+                            <li><strong>Date Reported:</strong> {{ crime.date_reported }}</li>
+                            <li><strong>Location:</strong> {{ crime.location }}</li>
+                            <li><strong>Crime Type:</strong> {{ crime.crime_type }}</li>
+                            <li><strong>Assigned Officer:</strong> {{ crime.officer_name or 'Not assigned yet' }}</li>
+                        </ul>
+                        <h4>Evidence</h4>
+                        <div class="evidence-container">
+                            <ul>
+                                {% for evidence in crime.evidence %}
+                                    <li>{{ evidence.description }}</li>
+                                {% else %}
+                                    <li>No evidence found for this case.</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <a href="{{ url_for('dashboard') }}">
+            <button class="return-button">Return to Dashboard</button>
+        </a>
+    </div>
+</div>
+
+<script>
+    function toggleDetails(crimeId) {
+        var openDetails = document.querySelector('.crime-details[style="display: block;"]');
+        if (openDetails && openDetails.id !== 'details-' + crimeId) {
+            openDetails.style.display = 'none';
+        }
+
+        var details = document.getElementById('details-' + crimeId);
+        if (details.style.display === 'block') {
+            details.style.display = 'none';
+        } else {
+            details.style.display = 'block';
+        }
+    }
+</script>
+
+{% endblock %}

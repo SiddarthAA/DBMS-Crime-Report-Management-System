@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="theme-color" content="rgb(0,0,20)">
+    <meta name="description" content="Crime Record Management System - CRMS">
+    <title>{% block title %}Matrix Rain - CRMS{% endblock %}</title>
+    
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      #canvas {
+        width: 100vw;
+        height: 100vh;
+        background: #000;
+        margin: 0;
+        padding: 0;
+      }
+
+      .no-mouse {
+        cursor: none;
+      }
+
+      .dashboard-container {
+        position: relative;
+        text-align: center;
+        padding: 40px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 15px;
+        box-shadow: 0 0 15px #0f0;
+        backdrop-filter: blur(5px);
+        margin: 60px auto;
+        max-width: 600px;
+        }
+        
+        .profile-section {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .dashboard-container h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .dash-btn {
+            background: transparent;
+            border: 2px solid #0f0;
+            padding: 12px 24px;
+            color: #0f0;
+            text-decoration: none;
+            font-size: 1.1em;
+            border-radius: 8px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .dash-btn:hover {
+            background: #0f0;
+            color: black;
+            cursor: pointer;
+        }
+        
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #0f0;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #000;
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            margin-top: 10px;
+            z-index: 100;
+            min-width: 120px;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            color: #0f0;
+            padding: 10px;
+            text-decoration: none;
+            border-bottom: 1px solid #0f0;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #0f0;
+            color: black;
+        }
+
+        .logout-btn {
+            border-color: red;
+            color: red;
+        }
+
+        .logout-btn:hover {
+            background: red;
+            color: white;
+        }
+
+        #control {
+          position: fixed;
+          top: 0;
+          right: 0;
+          z-index: 10;
+          opacity: 0;
+          background: transparent;
+          color: white;
+          font-size: x-large;
+          width: 30px;
+          height: 30px;
+          font-weight: 900;
+          cursor: pointer;
+          border: 1px solid slategrey;
+        }
+
+        #control:hover {
+          opacity: 1;
+        }
+
+        #panel {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 50vw;
+          padding: 25px;
+          background-color: #000;
+          color: #fff;
+          border-radius: 5px;
+        }
+
+        .hide {
+          display: none;
+        }
+
+        input {
+          padding: 2px;
+          border: 1px solid rgb(55, 55, 55);
+          border-radius: 5px;
+          margin: 5px;
+          background: #000;
+          color: #fff;
+        }
+
+        .content {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          text-align: center;
+          z-index: 1;
+          color: #0f0;
+          text-shadow: 0 0 10px #0f0;
+        }
+
+        h2 {
+          font-size: 2em;
+          color: #0f0;
+          text-shadow: 0 0 10px #0f0;
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+        }
+
+        li {
+          margin: 10px 0;
+          font-size: 1.5em;
+        }
+
+        a {
+          color: #0f0;
+          text-decoration: none;
+          text-shadow: 0 0 5px #0f0;
+        }
+
+        a:hover {
+          text-shadow: 0 0 15px #0f0;
+        }
+
+        .profile-container {
+            max-width: 500px;
+            margin: 80px auto;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #0f0;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 0 15px #0f0;
+            color: #0f0;
+        }
+
+        .profile-container h2 {
+            margin-bottom: 25px;
+            font-size: 2em;
+            text-shadow: 0 0 8px #0f0;
+        }
+
+        .profile-card p {
+            font-size: 1.1em;
+            margin: 12px 0;
+            text-shadow: 0 0 5px #0f0;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #0f0;
+            padding: 10px 20px;
+            border: 1px solid #0f0;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #0f0;
+            color: black;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- Matrix Rain Canvas -->
+    <canvas id="canvas"></canvas>
+
+    <!-- Control Panel Button -->
+    <button id="control">></button>
+
+    <!-- Control Panel -->
+    <div id="panel" class="hide">
+      <label>
+        Background color
+        <input type="color" id="bg" value="#000000">
+      </label>
+      <br>
+      <label>
+        Foreground color
+        <input type="color" id="fr" value="#00ff00">
+      </label>
+      <br>
+      <label>
+        Font size
+        <input type="number" id="fs" value="24">
+      </label>
+      <br>
+      <label>
+        Hide mouse
+        <input type="checkbox" id="mo">
+      </label>
+    </div>
+
+    <!-- Main Content Area -->
+    <div id="content" class="content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <!-- Matrix Rain Effect JavaScript -->
+    <script>
+      var disp = document.getElementById("canvas");
+      var ctx = disp.getContext("2d");
+
+      disp.height = window.innerHeight;
+      disp.width = window.innerWidth;
+      var matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/\\~{[|`'\"']}".split("");
+
+      var font_size = 15;
+      var speed = 65;
+      var columns = disp.width / font_size;
+
+      var drops = [];
+      for (var x = 0; x < columns; x++) {
+        drops[x] = 0;
+      }
+
+      window.addEventListener("resize", resize);
+      document.getElementById("fs").addEventListener("change", resize);
+
+      function resize() {
+        font_size = document.getElementById("fs").value;
+        disp.height = window.innerHeight * 1.5;
+        disp.width = window.innerWidth * 1.5;
+        columns = disp.width / font_size;
+        for (var x = 0; x < columns; x++) {
+          if (!drops[x]) {
+            drops[x] = 0;
+          }
+        }
+      }
+
+      function draw() {
+        let fr = document.getElementById("fr").value;
+        let bg = document.getElementById("bg").value;
+        font_size = document.getElementById("fs").value;
+        history.replaceState({ page: 1 }, '', `#${fr.replace('#', '')}-${bg.replace('#', '')}-${font_size}`);
+
+        bg = bg + '26';
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', document.getElementById("bg").value);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, disp.width, disp.height);
+        ctx.fillStyle = fr;
+        ctx.font = font_size + "px monospace";
+
+        for (var i = 0; i < drops.length; i++) {
+          if (drops[i] == 0) {
+            if (Math.random() > 0.895) {
+              drops[i] = 0;
+            } else {
+              drops[i] = -1;
+            }
+          } else {
+            var text = matrix[Math.floor(Math.random() * matrix.length)];
+            ctx.fillText(text, i * font_size, drops[i] * font_size);
+          }
+
+          if (drops[i] * font_size > disp.height) drops[i] = -1;
+
+          drops[i]++;
+        }
+      }
+
+      setInterval(draw, speed);
+
+      disp.addEventListener("click", () => document.getElementById("panel").classList.add('hide'));
+      document.getElementById("control").addEventListener("click", () => document.getElementById("panel").classList.toggle('hide'));
+      document.getElementById("mo").addEventListener('change', () => {
+        if (document.getElementById("mo").checked) {
+          disp.classList.add('no-mouse');
+        } else {
+          disp.classList.remove('no-mouse');
+        }
+      });
+
+      if ('wakeLock' in navigator) {
+        (async () => await navigator.wakeLock.request('screen'))();
+        document.addEventListener('visibilitychange', async () => {
+          if (document.visibilityState === 'visible') {
+            await navigator.wakeLock.request('screen');
+          }
+        });
+      }
+
+      const profileIcon = document.getElementById('profileIcon');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+
+      profileIcon.addEventListener('click', () => {
+         dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileIcon.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+        });
+    </script>
+  </body>
+</html>

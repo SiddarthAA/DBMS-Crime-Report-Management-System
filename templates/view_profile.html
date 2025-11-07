@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Your Profile</h2>
+    <div class="profile-card">
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Role:</strong> {{ user.role|capitalize }}</p>
+        <p><strong>Joined On:</strong> {{ user.joined_on.strftime('%B %d, %Y') }}</p>
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="back-btn">← Back to Dashboard</a>
+</div>
+{% endblock %}

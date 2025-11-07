@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <section>      
+        {% for _ in range(150) %}
+            <span></span>
+        {% endfor %}
+
+        <div class="signin">
+            <div class="content">
+                <h2>Signin</h2>
+                <form class="form" method="POST" action="{{ url_for('login') }}">
+                    <div class="inputBox">
+                        <input type="text" name="email" required>
+                        <i>Email ID</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" name="password" required>
+                        <i>Password</i>
+                    </div>
+                    <div class="links">
+                        <a href="#">Forget Password</a>
+                        <a href="{{ url_for('signup') }}">SignUp</a>
+                    </div>
+                    <div class="inputBox">
+                        <input type="submit" value="Login">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

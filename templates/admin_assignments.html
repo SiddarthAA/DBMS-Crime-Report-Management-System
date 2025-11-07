@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .dashboard-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border: 1px solid #0f0;
+        border-radius: 10px;
+        color: #0f0;
+    }
+
+    h2, h3 {
+        font-size: 26px;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #0f0;
+    }
+
+    label, select {
+        display: block;
+        margin: 10px 0 5px;
+        color: #0f0;
+    }
+
+    select {
+        width: 100%;
+        padding: 8px;
+        background-color: black;
+        border: 1px solid #0f0;
+        color: #0f0;
+        border-radius: 4px;
+    }
+
+    .assign-btn {
+        margin-top: 15px;
+        background-color: transparent;
+        color: #0f0;
+        border: 1px solid #0f0;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .assign-btn:hover {
+        background-color: #0f0;
+        color: #000;
+    }
+
+    .assignment-entry {
+        border: 1px solid #0f0;
+        border-radius: 6px;
+        margin: 10px 0;
+    }
+
+    .assignment-header {
+        padding: 10px 20px;
+        background: rgba(0, 0, 0, 0.8);
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .assignment-details {
+        display: none;
+        padding: 10px 20px;
+        background: rgba(0, 0, 0, 0.9);
+    }
+</style>
+
+<div class="dashboard-container">
+    <h2>Assign Officers</h2>
+
+    <form method="POST">
+        <label for="crime_id">Select Crime:</label>
+        <select name="crime_id" required>
+            {% for crime in crimes %}
+                <option value="{{ crime['crime_id'] }}">{{ crime['title'] }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="officer_id">Select Officer:</label>
+        <select name="officer_id" required>
+            {% for officer in officers %}
+                <option value="{{ officer['user_id'] }}">{{ officer['name'] }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="assign-btn">Assign Officer</button>
+    </form>
+
+    <h3>Assigned Crimes</h3>
+    {% for crime in crimes %}
+    <div class="assignment-entry">
+        <div class="assignment-header" onclick="toggleDetails('{{ crime.crime_id }}')">
+            {{ crime['title'] }}
+        </div>
+        <div class="assignment-details" id="details-{{ crime['crime_id'] }}">
+            <p><strong>Type:</strong> {{ crime['crime_type'] }}</p>
+            <p><strong>Location:</strong> {{ crime['location'] }}</p>
+            <p><strong>Date:</strong> {{ crime['date_reported'] }}</p>
+            <p><strong>Officer:</strong> {{ crime['officer_name'] or 'Not assigned yet' }}</p>
+        </div>
+    </div>
+    {% else %}
+        <p style="text-align: center;">No crimes available for assignment.</p>
+    {% endfor %}
+</div>
+
+<script>
+    function toggleDetails(crimeId) {
+        const details = document.getElementById('details-' + crimeId);
+        details.style.display = details.style.display === 'block' ? 'none' : 'block';
+    }
+</script>
+{% endblock %}

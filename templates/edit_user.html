@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .form-container {
+        width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: rgba(0, 0, 0, 0.85);
+        border: 1px solid #0f0;
+        border-radius: 12px;
+        color: #0f0;
+    }
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+    }
+    input[type="text"],
+    input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        background: black;
+        color: #0f0;
+        border: 1px solid #0f0;
+        border-radius: 5px;
+    }
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: #0f0;
+        color: #000;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .btn-submit:hover {
+        background-color: #000;
+        color: #0f0;
+        border: 1px solid #0f0;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Edit User</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" value="{{ user.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" value="{{ user.email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" name="phone_number" id="phone_number" value="{{ user.phone_number }}" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" name="address" id="address" value="{{ user.address }}" required>
+        </div>
+        <button type="submit" class="btn-submit">Update User</button>
+    </form>
+</div>
+{% endblock %}
